@@ -21,9 +21,5 @@ func main() {
 	routes.AuthRoutes(router)
 	routes.UserRoutes(router)
 
-	router.GET("/api", func(ctx *gin.Context) {
-		ctx.JSON(200, gin.H{"success": "Access granted for api"})
-	})
-
 	router.Run(":" + port)
 }

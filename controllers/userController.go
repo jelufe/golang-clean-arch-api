@@ -214,7 +214,13 @@ func GetUser() gin.HandlerFunc {
 		var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
 
 		var user models.User
-		findError := userCollection.FindOne(ctx, bson.M{"_id": id}).Decode(&user)
+		objId, convertError := primitive.ObjectIDFromHex(id)
+
+		if convertError != nil {
+			panic(err)
+		}
+
+		findError := userCollection.FindOne(ctx, bson.M{"_id": objId}).Decode(&user)
 
 		defer cancel()
 
