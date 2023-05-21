@@ -45,18 +45,27 @@ func VerifyPassword(userPassword string, providedPassword string) (bool, string)
 	return check, msg
 }
 
+// CreateUsers	godoc
+// @Sumary Create users
+// #Description Save users data in database
+// @Param users body models.SignupRequest true "Create users"
+// @Produce application/json
+// @Tags users
+// @Success 200
+// @Router /users/signup [post]
 func Signup() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
 
-		var user models.User
-		err := c.BindJSON(&user)
+		var signupRequest models.SignupRequest
+		err := c.BindJSON(&signupRequest)
 
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
 
+		user := models.User{Username: signupRequest.Username, Password: signupRequest.Password, UserType: signupRequest.Password}
 		validationError := validate.Struct(user)
 
 		if validationError != nil {

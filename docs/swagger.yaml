@@ -1,0 +1,39 @@
+basePath: /
+definitions:
+  models.SignupRequest:
+    properties:
+      password:
+        type: string
+      user_type:
+        type: string
+      username:
+        type: string
+    required:
+    - password
+    - user_type
+    - username
+    type: object
+host: localhost:9000
+info:
+  contact: {}
+  description: A Service API in Go using Gin framework
+  title: Go Service API
+  version: "1.0"
+paths:
+  /users/signup:
+    post:
+      parameters:
+      - description: Create users
+        in: body
+        name: users
+        required: true
+        schema:
+          $ref: '#/definitions/models.SignupRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      tags:
+      - users
+swagger: "2.0"
