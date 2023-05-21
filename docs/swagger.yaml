@@ -1,17 +1,20 @@
 basePath: /
 definitions:
+  models.LoginRequest:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
   models.SignupRequest:
     properties:
       password:
         type: string
-      user_type:
+      userType:
         type: string
       username:
         type: string
-    required:
-    - password
-    - user_type
-    - username
     type: object
 host: localhost:9000
 info:
@@ -20,10 +23,79 @@ info:
   title: Go Service API
   version: "1.0"
 paths:
+  /users:
+    get:
+      description: Returns all users
+      parameters:
+      - description: number of results per page
+        in: query
+        name: recordPerPage
+        type: integer
+      - description: page number
+        in: query
+        name: page
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      security:
+      - BearerAuth: []
+      tags:
+      - users
+  /users/{id}:
+    get:
+      description: Returns object with requested id
+      parameters:
+      - description: User Id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      security:
+      - BearerAuth: []
+      tags:
+      - users
+  /users/login:
+    post:
+      description: Generate access token
+      parameters:
+      - description: Login
+        in: body
+        name: users
+        required: true
+        schema:
+          $ref: '#/definitions/models.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      tags:
+      - users
   /users/signup:
     post:
+      description: Save user data in database
       parameters:
-      - description: Create users
+      - description: Signup
         in: body
         name: users
         required: true
@@ -34,6 +106,15 @@ paths:
       responses:
         "200":
           description: OK
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
       tags:
       - users
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

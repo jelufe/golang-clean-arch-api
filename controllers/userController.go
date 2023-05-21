@@ -45,13 +45,15 @@ func VerifyPassword(userPassword string, providedPassword string) (bool, string)
 	return check, msg
 }
 
-// CreateUsers	godoc
-// @Sumary Create users
-// #Description Save users data in database
-// @Param users body models.SignupRequest true "Create users"
+// Signup	godoc
+// @Sumary Create user
+// @Description Save user data in database
+// @Param users body models.SignupRequest true "Signup"
 // @Produce application/json
 // @Tags users
 // @Success 200
+// @Failure 400
+// @Failure 500
 // @Router /users/signup [post]
 func Signup() gin.HandlerFunc {
 	return func(c *gin.Context) {
@@ -109,18 +111,30 @@ func Signup() gin.HandlerFunc {
 	}
 }
 
+// Login godoc
+// @Sumary Login user
+// @Description Generate access token
+// @Param users body models.LoginRequest true "Login"
+// @Produce application/json
+// @Tags users
+// @Success 200
+// @Failure 400
+// @Failure 500
+// @Router /users/login [post]
 func Login() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
-		var user models.User
-		var foundUser models.User
 
-		err := c.BindJSON(&user)
+		var loginRequest models.LoginRequest
+		err := c.BindJSON(&loginRequest)
 
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
+
+		user := models.User{Username: loginRequest.Username, Password: loginRequest.Password}
+		var foundUser models.User
 
 		findError := userCollection.FindOne(ctx, bson.M{"username": user.Username}).Decode(&foundUser)
 		defer cancel()
@@ -154,6 +168,18 @@ func Login() gin.HandlerFunc {
 	}
 }
 
+// Get Users godoc
+// @Sumary Get Users
+// @Description Returns all users
+// @Param        recordPerPage    query     int  false  "number of results per page"
+// @Param        page    query     int  false  "page number"
+// @Produce application/json
+// @Tags users
+// @Success 200
+// @Failure 400
+// @Failure 500
+// @Router /users [get]
+// @Security BearerAuth
 func GetUsers() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		err := helper.CheckUserType(c, "ADMIN")
@@ -178,7 +204,6 @@ func GetUsers() gin.HandlerFunc {
 		}
 
 		startIndex := (page - 1) * recordPerPage
-		startIndex, err = strconv.Atoi(c.Query("startIndex"))
 
 		matchStage := bson.D{{"$match", bson.D{{}}}}
 		groupStage := bson.D{{"$group", bson.D{
@@ -210,6 +235,17 @@ func GetUsers() gin.HandlerFunc {
 	}
 }
 
+// GetUser godoc
+// @Sumary Get User
+// @Description Returns object with requested id
+// @Param        id   path      string  true  "User Id"
+// @Produce application/json
+// @Tags users
+// @Success 200
+// @Failure 400
+// @Failure 500
+// @Router /users/{id} [get]
+// @Security BearerAuth
 func GetUser() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		id := c.Param("id")

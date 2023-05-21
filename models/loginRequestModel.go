@@ -1,7 +1,6 @@
 package models
 
-type SignupRequest struct {
+type LoginRequest struct {
 	Username *string
 	Password *string
-	UserType *string
 }

@@ -15,6 +15,9 @@ import (
 // @title Go Service API
 // @version 1.0
 // @description A Service API in Go using Gin framework
+// @securityDefinitions.apikey BearerAuth
+// @in header
+// @name Authorization
 
 // @host localhost:9000
 // @BasePath /
