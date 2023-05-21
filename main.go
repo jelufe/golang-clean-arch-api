@@ -35,6 +35,7 @@ func main() {
 
 	routes.AuthRoutes(router)
 	routes.UserRoutes(router)
+	routes.ContactRoutes(router)
 
 	router.Run(":" + port)
 }

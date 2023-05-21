@@ -16,6 +16,39 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/contacts": {
+            "post": {
+                "description": "Save contacts data in database",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "contacts"
+                ],
+                "parameters": [
+                    {
+                        "description": "Contacts",
+                        "name": "users",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.ImportContactsRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
         "/users": {
             "get": {
                 "security": [
@@ -161,8 +194,38 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "models.Contact": {
+            "type": "object",
+            "required": [
+                "cellphone",
+                "name"
+            ],
+            "properties": {
+                "cellphone": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.ImportContactsRequest": {
+            "type": "object",
+            "properties": {
+                "contacts": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Contact"
+                    }
+                }
+            }
+        },
         "models.LoginRequest": {
             "type": "object",
+            "required": [
+                "password",
+                "username"
+            ],
             "properties": {
                 "password": {
                     "type": "string"
@@ -174,11 +237,16 @@ const docTemplate = `{
         },
         "models.SignupRequest": {
             "type": "object",
+            "required": [
+                "password",
+                "user_type",
+                "username"
+            ],
             "properties": {
                 "password": {
                     "type": "string"
                 },
-                "userType": {
+                "user_type": {
                     "type": "string"
                 },
                 "username": {

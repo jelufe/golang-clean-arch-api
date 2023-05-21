@@ -1,20 +1,44 @@
 basePath: /
 definitions:
+  models.Contact:
+    properties:
+      cellphone:
+        type: string
+      name:
+        type: string
+    required:
+    - cellphone
+    - name
+    type: object
+  models.ImportContactsRequest:
+    properties:
+      contacts:
+        items:
+          $ref: '#/definitions/models.Contact'
+        type: array
+    type: object
   models.LoginRequest:
     properties:
       password:
         type: string
       username:
         type: string
+    required:
+    - password
+    - username
     type: object
   models.SignupRequest:
     properties:
       password:
         type: string
-      userType:
+      user_type:
         type: string
       username:
         type: string
+    required:
+    - password
+    - user_type
+    - username
     type: object
 host: localhost:9000
 info:
@@ -23,6 +47,27 @@ info:
   title: Go Service API
   version: "1.0"
 paths:
+  /contacts:
+    post:
+      description: Save contacts data in database
+      parameters:
+      - description: Contacts
+        in: body
+        name: users
+        required: true
+        schema:
+          $ref: '#/definitions/models.ImportContactsRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      tags:
+      - contacts
   /users:
     get:
       description: Returns all users
