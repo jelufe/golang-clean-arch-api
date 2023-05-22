@@ -12,7 +12,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-func DbInstance() *mongo.Client {
+func MongoDbInstance() *mongo.Client {
 	envError := godotenv.Load(".env")
 
 	if envError != nil {
@@ -41,7 +41,7 @@ func DbInstance() *mongo.Client {
 	return client
 }
 
-var Client *mongo.Client = DbInstance()
+var MongoClient *mongo.Client = MongoDbInstance()
 
 func OpenCollection(client *mongo.Client, collectionName string) *mongo.Collection {
 	var collection *mongo.Collection = client.Database("golangApi").Collection(collectionName)

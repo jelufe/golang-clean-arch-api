@@ -19,7 +19,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-var userCollection *mongo.Collection = database.OpenCollection(database.Client, "user")
+var userCollection *mongo.Collection = database.OpenCollection(database.MongoClient, "user")
 var validate = validator.New()
 
 func HashPassword(password string) string {
@@ -67,7 +67,7 @@ func Signup() gin.HandlerFunc {
 			return
 		}
 
-		user := models.User{Username: signupRequest.Username, Password: signupRequest.Password, UserType: signupRequest.Password}
+		user := models.User{Username: signupRequest.Username, Password: signupRequest.Password, UserType: signupRequest.UserType}
 		validationError := validate.Struct(user)
 
 		if validationError != nil {
