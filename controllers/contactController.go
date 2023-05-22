@@ -1,17 +1,12 @@
 package controllers
 
 import (
-	"database/sql"
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/jelufe/golang-clean-arch-api/database"
 	"github.com/jelufe/golang-clean-arch-api/models"
-	_ "github.com/lib/pq"
+	"github.com/jelufe/golang-clean-arch-api/services"
 )
-
-var PostgresDb *sql.DB = database.PostgresDb
 
 // importContacts	godoc
 // @Sumary import Contacts
@@ -33,26 +28,22 @@ func ImportContacts() gin.HandlerFunc {
 			return
 		}
 
-		sqlStr := "INSERT INTO contacts (nome, celular) VALUES "
+		userType := c.GetString("user_type")
+		var rowsAffected int64
+		var execError error
 
-		for _, row := range *importContactsRequest.Contacts {
-			name := row.Name
-			cellphone := row.Cellphone
-			sqlStr += fmt.Sprintf("('%v', '%v'),", name, cellphone)
+		if userType == "VAREJAO" {
+			rowsAffected, execError = services.VarejaoImportContacts(importContactsRequest)
+		} else if userType == "MACAPA" {
+			rowsAffected, execError = services.MacapaImportContacts(importContactsRequest)
+		} else {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "unmapped import for this user"})
 		}
-
-		sqlStr = sqlStr[0 : len(sqlStr)-1]
-
-		res, execError := PostgresDb.Exec(sqlStr)
-
-		database.ClosePostgresDb()
 
 		if execError != nil {
 			c.JSON(http.StatusInternalServerError, execError.Error())
 			return
 		}
-
-		rowsAffected, _ := res.RowsAffected()
 
 		c.JSON(http.StatusOK, rowsAffected)
 	}
