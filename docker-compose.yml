@@ -21,10 +21,19 @@ services:
       POSTGRES_PASSWORD: "admin"
       POSTGRES_USER: "admin"
       
-  mongo:
+  mongodb:
     image: mongo
     ports:
       - "27017:27017"
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: admin
+  
+  mongo_seed:
+    image: mongo
+    links:
+      - mongodb
+    volumes:
+      - ./mongo-seed:/mongo-seed
+    command:
+      mongoimport --host mongodb --db golangApi --collection user --authenticationDatabase admin --username admin --password admin --drop --file /mongo-seed/init.json --jsonArray

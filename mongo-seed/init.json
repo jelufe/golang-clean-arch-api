@@ -1,0 +1,22 @@
+[
+    {
+        "_id": {
+          "$oid": "646c28f1a30884c48625408d"
+        },
+        "username": "varejao",
+        "password": "$2a$14$j8M712AtQFfDzmgzGdeZRepQIuDtINvjSluqivHOXYsOtB2J2qTEm",
+        "usertype": "VAREJAO",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VybmFtZSI6InZhcmVqYW8iLCJVaWQiOiI2NDZjMjhmMWEzMDg4NGM0ODYyNTQwOGQiLCJVc2VyVHlwZSI6IlZBUkVKQU8iLCJleHAiOjE2ODQ4OTYzNjl9.5BNPucjQnxnE0YROjY0fqj7UEjNBt4NIpjSKQsu3o4c",
+        "refreshtoken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VybmFtZSI6IiIsIlVpZCI6IjAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsIlVzZXJUeXBlIjoiIiwiZXhwIjoxNjg1NDE0NzY5fQ.TA_7iNk0bD6rVr3x22_rjy7qkFeWkqZbsYv0pVDMhas"
+    },
+    {
+        "_id": {
+          "$oid": "646c2906a30884c48625408e"
+        },
+        "username": "macapa",
+        "password": "$2a$14$zr/g6AgFkmWQxfuIzyttM.5.Tyff/FJBsMQlwzqUH.svv0hO9NvfO",
+        "usertype": "MACAPA",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VybmFtZSI6Im1hY2FwYSIsIlVpZCI6IjY0NmMyOTA2YTMwODg0YzQ4NjI1NDA4ZSIsIlVzZXJUeXBlIjoiTUFDQVBBIiwiZXhwIjoxNjg0ODk2MzkwfQ.GnpvGBUXwXGF64univFiv-IJmKsw116RixM3cMb-lXc",
+        "refreshtoken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VybmFtZSI6IiIsIlVpZCI6IjAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsIlVzZXJUeXBlIjoiIiwiZXhwIjoxNjg1NDE0NzkwfQ.eGCH64cGzU6Jbg06aWsxKvK749wfEgwbBBDvZI4XFCE"
+    }
+]
