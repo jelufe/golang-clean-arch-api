@@ -17,6 +17,11 @@ definitions:
           $ref: '#/definitions/models.Contact'
         type: array
     type: object
+  models.ImportContactsResponse:
+    properties:
+      rows_affected:
+        type: integer
+    type: object
   models.LoginRequest:
     properties:
       password:
@@ -62,10 +67,14 @@ paths:
       responses:
         "200":
           description: OK
+          schema:
+            $ref: '#/definitions/models.ImportContactsResponse'
         "400":
           description: Bad Request
         "500":
           description: Internal Server Error
+      security:
+      - BearerAuth: []
       tags:
       - contacts
   /users:

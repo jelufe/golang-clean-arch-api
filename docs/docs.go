@@ -18,6 +18,11 @@ const docTemplate = `{
     "paths": {
         "/contacts": {
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Save contacts data in database",
                 "produces": [
                     "application/json"
@@ -38,7 +43,10 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK"
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.ImportContactsResponse"
+                        }
                     },
                     "400": {
                         "description": "Bad Request"
@@ -217,6 +225,14 @@ const docTemplate = `{
                     "items": {
                         "$ref": "#/definitions/models.Contact"
                     }
+                }
+            }
+        },
+        "models.ImportContactsResponse": {
+            "type": "object",
+            "properties": {
+                "rows_affected": {
+                    "type": "integer"
                 }
             }
         },
