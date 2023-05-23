@@ -28,7 +28,3 @@ func MysqlDbInstance() *sql.DB {
 
 	return db
 }
-
-func CloseMysqlDb() {
-	defer MysqlDb.Close()
-}

@@ -37,7 +37,3 @@ func PostgresDbInstance() *sql.DB {
 
 	return db
 }
-
-func ClosePostgresDb() {
-	defer PostgresDb.Close()
-}
