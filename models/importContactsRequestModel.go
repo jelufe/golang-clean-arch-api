@@ -1,5 +1,5 @@
 package models
 
 type ImportContactsRequest struct {
-	Contacts *[]Contact `json:"contacts"`
+	Contacts []Contact `json:"contacts"`
 }
