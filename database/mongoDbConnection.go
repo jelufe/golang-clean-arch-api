@@ -2,9 +2,9 @@ package database
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"os"
+	"regexp"
 	"time"
 
 	"github.com/joho/godotenv"
@@ -12,12 +12,22 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-func MongoDbInstance() *mongo.Client {
-	envError := godotenv.Load(".env")
+const projectDirName = "golang-clean-arch-api"
 
-	if envError != nil {
-		log.Fatal("Error loading .env file")
+func loadEnv() {
+	projectName := regexp.MustCompile(`^(.*` + projectDirName + `)`)
+	currentWorkDirectory, _ := os.Getwd()
+	rootPath := projectName.Find([]byte(currentWorkDirectory))
+
+	err := godotenv.Load(string(rootPath) + `/.env`)
+
+	if err != nil {
+		log.Fatalf("Error loading .env file")
 	}
+}
+
+func MongoDbInstance() *mongo.Client {
+	loadEnv()
 
 	mongoDb := os.Getenv("MONGODB_URL")
 
@@ -35,8 +45,6 @@ func MongoDbInstance() *mongo.Client {
 	if connectError != nil {
 		log.Fatal(connectError)
 	}
-
-	fmt.Println("Connected to mongoDB!")
 
 	return client
 }

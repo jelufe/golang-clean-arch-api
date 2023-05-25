@@ -3,21 +3,15 @@ package database
 import (
 	"database/sql"
 	"fmt"
-	"log"
 	"os"
 
-	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 )
 
 var PostgresDb *sql.DB = PostgresDbInstance()
 
 func PostgresDbInstance() *sql.DB {
-	envError := godotenv.Load(".env")
-
-	if envError != nil {
-		log.Fatal("Error loading .env file")
-	}
+	loadEnv()
 
 	postgresHost := os.Getenv("POSTGRES_HOST")
 	postgresPort := os.Getenv("POSTGRES_PORT")
